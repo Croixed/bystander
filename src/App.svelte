@@ -498,7 +498,7 @@ $: {
 }
 
 .btn-primary {
-  background-color: #28a745;
+  background-color: #289642;
   border-color: #28a745;
 }
 
