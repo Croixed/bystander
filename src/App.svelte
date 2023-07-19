@@ -6,7 +6,7 @@
   let questionNodes = [
     {
       id: 0,
-      question: "Hi, I'm Jen. \n I may be having a recurring medical event. \n Please follow the prompts BEFORE calling 911. \n Will you help me?",
+      question: "Hi, I'm Jen. I may be having a recurring medical event. Please follow the prompts BEFORE calling 911. Will you help me?",
       answers: [
         {
           answer: "Touch here for Yes",
@@ -50,7 +50,7 @@
 
 
     {
-      question: "This appears not to be a medical emergency for Jen.\n 911 is not the preferred response.\nPlease click next to help Jen get her preferred help.",
+      question: "This appears not to be a medical emergency for Jen. 911 is not the preferred response. Please click next to help Jen get her preferred help.",
       id: 3,
       answers: [
         {
@@ -170,7 +170,7 @@
 
     {
       id: 10,
-      question: "Jen has several breathing problems. \n This is normal for Jen. \n Please help Jen support the bottom of her ribcage and wait for the timer to end.",
+      question: "Jen has several breathing problems. This is normal for Jen. Please help Jen support the bottom of her ribcage and wait for the timer to end.",
       // type: 240,
       timerAnim: 5,
       answers: [
@@ -245,7 +245,7 @@
     {
       id: 15,
       type: 60, // I'll probably change type to "timerMinutes" later instead
-      question: "Please wait one minute.\nA link to call 911 will automatically appear after one minute. \nIf Jen does not regain consciousness, or is screaming while unconscious, please call 911 and share that Jen has absence seizures,\n cerebral palsy, asthma/restrictive thoracic disorder and periodic partial paralysis.",
+      question: "Please wait one minute. A link to call 911 will automatically appear after one minute. If Jen does not regain consciousness, or is screaming while unconscious, please call 911 and share that Jen has absence seizures, cerebral palsy, asthma/restrictive thoracic disorder and periodic partial paralysis.",
       answers: [
         {
           answer: "Touch here if I wake up",
@@ -311,7 +311,7 @@
 
   let currentTimerId = 9;
 
-
+  // I'll rename this later
   let tempFunc = () => {
     // if the current question is 12, 18, or 19, then tapping a button should dial 911
     if (currentQuestion.id === 12 || currentQuestion.id === 18 || currentQuestion.id === 19) {
@@ -352,7 +352,7 @@
           {currentTimerId = setTimeout(() => {
             console.log("2 seconds ran")
             if (qDuringCall == currentQuestion) {
-              currentQuestion = questionNodes[currentQuestion.answers[0].nextQuestion]
+              currentQuestion = questionNodes[12]
             }
           }, currentQuestion.type * 1000)} // make sure to fix the multiplier later!!!! !!!! this one is for moving forward, not disabling
 
@@ -369,13 +369,13 @@ $: {
       isDisabled = true;
       setTimeout(() => {
         isDisabled = false;
-      }, 10000);
+      }, 300000);
     }
   }
 
 
 
-  let orig = 10
+  let orig = 300
   let timeVar = tweened(orig)
 
   setInterval(()=> {
