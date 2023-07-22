@@ -1,7 +1,11 @@
 <script>
     import { loop_guard } from "svelte/internal";
     import { tweened } from "svelte/motion";
-    import shield from './assets/shield.svg'
+    import shield from './assets/shield.svg';
+    import audio from './assets/recording01.mp3';
+
+    
+
 
   let questionNodes = [
     {
@@ -216,10 +220,11 @@
       answers: [
         {
           answer: "Click here for audio", // insert link here
+          nextQuestion: 3453463 // imgur link to alphabet here?
         },
         {
           answer: "Click here to view the sign language alphabet",
-          nextQuestion: 14
+          nextQuestion: 145434234 // this doesn't actually need to lead anywhere, but it will error with this solution(?)
         },
       ]
 
@@ -299,11 +304,6 @@
         }
       ]
     }
-
-
-
-
-
   ]
 
   let currentQuestion = questionNodes[0]
@@ -311,21 +311,52 @@
 
   let currentTimerId = 9;
 
-  // I'll rename this later
-  let tempFunc = () => {
-    // if the current question is 12, 18, or 19, then tapping a button should dial 911
+  // the purpose of this function is to handle the various "final" actions button 1 can perform at the end of the tree
+  // I'm sure there has to be a better way to do this. also I'll rename it later
+  let primaryButtonHandler = () => {
+    // if the current question is 12, 18, or 19, then tapping a button should dial 911?
     if (currentQuestion.id === 12 || currentQuestion.id === 18 || currentQuestion.id === 19) {
       window.location.href = "tel:911"
     }
 
+    
 
 
-    currentQuestion = questionNodes[currentQuestion.answers[0].nextQuestion]
-    {clearTimeout(currentTimerId)}
-    console.log(currentTimerId, " - current timer id")
-    console.log('timeoutwas just cleareed with temp func')
+
+    // if the current question is 13, then play some audio
+    if (currentQuestion.id === 13) {
+        new Audio(audio).play();
+      } else {
+
+        currentQuestion = questionNodes[currentQuestion.answers[0].nextQuestion]
+        {clearTimeout(currentTimerId)}
+        console.log(currentTimerId, " - current timer id")
+        console.log('timeoutwas just cleareed with temp func')
+      }
 
     
+    }
+
+    let buttonTwoHandler = () => {
+      
+// if the current question is 13, then tapping the first button should play/link to audio?
+if (currentQuestion.id === 13) {
+      // hard linking to discord, I can fix this later
+      window.location.href = "https://cdn.discordapp.com/attachments/1067638884214788176/1128493877179973642/image.png"
+    }
+
+      currentQuestion = questionNodes[currentQuestion.answers[1].nextQuestion]
+    }
+
+    // let buttonThreeHandler = () => {
+    // if the current question is 13, then tapping the third button should go to the guardian node instead
+    //   currentQuestion = questionNodes[currentQuestion.answers[2].nextQuestion]
+    // }
+
+    let guardianHandler = () => {
+      // () => currentQuestion.question = currentQuestion.guardianText
+      currentQuestion.answers = [] // manually clearing the array here might not be the best option?
+      currentQuestion.question = "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. My breathing machine is in the cooler bag on the right bedside table. Thank you!"
     }
   
 
@@ -354,7 +385,7 @@
             if (qDuringCall == currentQuestion) {
               currentQuestion = questionNodes[12]
             }
-          }, currentQuestion.type * 1000)} // make sure to fix the multiplier later!!!! !!!! this one is for moving forward, not disabling
+          }, currentQuestion.type * 1000)} // make sure to fix the multiplier later! this one is for moving forward, not disabling
 
     }
   }
@@ -404,21 +435,21 @@ $: {
       {/if}
 
 
-      <!-- this is getting a little messy and I'll refactor later -->
+      <!-- this is a mess of ifs I'll refactor later -->
       {#if (!currentQuestion.timerAnim || Math.trunc($timeVar) <= 0) && currentQuestion.answers.length > 0}
-        <button class="btn-primary" on:click={tempFunc} disabled={isDisabled}>{currentQuestion.answers[0].answer}</button>
+        <button class="btn-primary" on:click={primaryButtonHandler} disabled={isDisabled}>{currentQuestion.answers[0].answer}</button>
       {/if}
       {#if currentQuestion.answers[1]}
         {#if currentQuestion.id === 13}
           <p class="card-text">Does Jen look confused at communication attempts?</p>
         {/if}
-        <button class="btn-primary-no" on:click={() => currentQuestion = questionNodes[currentQuestion.answers[1].nextQuestion]}>{currentQuestion.answers[1].answer}</button>
+        <button class="btn-primary-no" on:click={buttonTwoHandler}>{currentQuestion.answers[1].answer}</button>
       {/if}
       {#if currentQuestion.answers[2]}
         <button class="btn-primary-no guardian" on:click={() => currentQuestion = questionNodes[currentQuestion.answers[2].nextQuestion]}>{currentQuestion.answers[2].answer}</button>
       {/if}
       {#if currentQuestion.answers.length === 0 || currentQuestion.id === 13}
-        <button class="guardian-btn" on:click={() => currentQuestion.question = currentQuestion.guardianText}>
+        <button class="guardian-btn" on:click={guardianHandler}>
           <img alt="guardian shield logo" src={shield} />
         </button>
       {/if}
