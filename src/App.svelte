@@ -310,11 +310,14 @@
 
 
   let currentTimerId = 9;
+  const audioElement = new Audio(audio);
+  let audioPlaying = false;
 
   // the purpose of this function is to handle the various "final" actions button 1 can perform at the end of the tree
   // I'm sure there has to be a better way to do this. also I'll rename it later
   let primaryButtonHandler = () => {
     // if the current question is 12, 18, or 19, then tapping a button should dial 911?
+    // backQueue.push(currentQuestion.id)
     if (currentQuestion.id === 12 || currentQuestion.id === 18 || currentQuestion.id === 19) {
       window.location.href = "tel:911"
     }
@@ -324,10 +327,20 @@
 
 
     // if the current question is 13, then play some audio
-    if (currentQuestion.id === 13) {
-        new Audio(audio).play();
-      } else {
+    if (currentQuestion.id === 13 && !audioPlaying) {
+ 
+        audioPlaying = true;
+        // const audioElement = new Audio(audio);
+        audioElement.play();
 
+        audioElement.addEventListener('ended', () => {
+          audioPlaying = false;
+        })
+      } else if (audioPlaying && currentQuestion.id === 13) {
+ 
+        console.log(backQueue)
+      } else {
+        backQueue.push(currentQuestion.id)
         currentQuestion = questionNodes[currentQuestion.answers[0].nextQuestion]
         {clearTimeout(currentTimerId)}
         console.log(currentTimerId, " - current timer id")
@@ -338,9 +351,9 @@
     }
 
     let buttonTwoHandler = () => {
-      
-// if the current question is 13, then tapping the first button should play/link to audio?
-if (currentQuestion.id === 13) {
+    backQueue.push(currentQuestion.id)  
+    // if the current question is 13, then tapping the first button should play/link to audio?
+    if (currentQuestion.id === 13) {
       // hard linking to discord, I can fix this later
       window.location.href = "https://cdn.discordapp.com/attachments/1067638884214788176/1128493877179973642/image.png"
     }
@@ -357,6 +370,21 @@ if (currentQuestion.id === 13) {
       // () => currentQuestion.question = currentQuestion.guardianText
       currentQuestion.answers = [] // manually clearing the array here might not be the best option?
       currentQuestion.question = "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. My breathing machine is in the cooler bag on the right bedside table. Thank you!"
+    }
+
+    let backQueue = [];
+
+    let backHandler = () => {
+      const lastId = backQueue.pop()
+      const newQ = questionNodes.filter((question) => lastId === question.id)
+      currentQuestion = newQ[0]
+      console.log(currentQuestion)
+
+      if (audioPlaying) {
+        audioElement.pause()
+        audioPlaying = false;
+        audioElement.currentTime = 0;
+      }
     }
   
 
@@ -453,6 +481,11 @@ $: {
           <img alt="guardian shield logo" src={shield} />
         </button>
       {/if}
+
+      {#if currentQuestion.id > 0} 
+        <p on:click={backHandler}>back</p>
+      {/if}
+
     </div>
   </div>
 </main>
