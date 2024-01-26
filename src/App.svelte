@@ -14,7 +14,7 @@
       answers: [
         {
           answer: "Touch here for Yes",
-          nextQuestion: 1
+          nextQuestion: 20
         },
         {
           answer: " Touch here for No", // goto: call 911
@@ -22,6 +22,9 @@
         }
       ]
     },
+
+
+
     {
       question: "Is Jen breathing?",
       id: 1,
@@ -303,7 +306,26 @@
           nextQuestion: 91111111
         }
       ]
-    }
+    },
+
+    {
+      id: 20,
+      question: "Where are we located?",
+      answers: [
+        {
+          answer: "Columbus, OH",
+          nextQuestion: 1
+        },
+        {
+          answer: "Portland, ME",
+          nextQuestion: 1
+        },
+        {
+          answer: "Other",
+          nextQuestion: 1
+        }
+      ],
+    },
   ]
 
   let currentQuestion = questionNodes[0]
@@ -471,10 +493,10 @@ $: {
         {#if currentQuestion.id === 13}
           <p class="card-text">Does Jen look confused at communication attempts?</p>
         {/if}
-        <button class="btn-primary-no" on:click={buttonTwoHandler}>{currentQuestion.answers[1].answer}</button>
+        <button class={currentQuestion.id === 20 ? "btn-primary" : "btn-primary-no"} on:click={buttonTwoHandler}>{currentQuestion.answers[1].answer}</button>
       {/if}
       {#if currentQuestion.answers[2]}
-        <button class="btn-primary-no guardian" on:click={() => currentQuestion = questionNodes[currentQuestion.answers[2].nextQuestion]}>{currentQuestion.answers[2].answer}</button>
+        <button class={currentQuestion.id === 20 ? "btn-primary" : "btn-primary-no guardian"} on:click={() => currentQuestion = questionNodes[currentQuestion.answers[2].nextQuestion]}>{currentQuestion.answers[2].answer}</button>
       {/if}
       {#if currentQuestion.answers.length === 0 || currentQuestion.id === 13}
         <button class="guardian-btn" on:click={guardianHandler}>
@@ -483,7 +505,7 @@ $: {
       {/if}
 
       {#if currentQuestion.id > 0} 
-        <p on:click={backHandler}>back</p>
+        <button class="back" on:click={backHandler}>←Back</button>
       {/if}
 
     </div>
@@ -537,6 +559,17 @@ $: {
 img {
   width: 70px;
   opacity: 0.12;
+}
+
+.back {
+  border: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  color: rgb(255, 38, 0);
+  font-weight: bold;
 }
 
 </style>
