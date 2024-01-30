@@ -408,6 +408,8 @@
     let backQueue = [];
 
     let backHandler = () => {
+      isDisabled = false;
+
       const lastId = backQueue.pop()
       const newQ = questionNodes.filter((question) => lastId === question.id)
       currentQuestion = newQ[0]
