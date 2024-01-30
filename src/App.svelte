@@ -34,7 +34,7 @@
           nextQuestion: 2
         },
         {
-          answer: "No", // goto: call 911, with appended bit about jen having cerebral palsy, asthma, absence seizures, and periodic partial paralysis
+          answer: "No", // goto: call 911, with appended bit about Jen having cerebral palsy, asthma, absence seizures, and periodic partial paralysis
           nextQuestion: 18
         }
       ]
@@ -57,7 +57,7 @@
 
 
     {
-      question: "This appears not to be a medical emergency for Jen. 911 is not the preferred response. Please click next to help Jen get her preferred help.",
+      question: "This appears not to be a medical emergency for Jen. 911 is not the preferred response. Please Click next to help Jen get her preferred help.",
       id: 3,
       answers: [
         {
@@ -108,7 +108,7 @@
 
     {
       id: 6,
-      question: "Try to communicate with Jen and click next.",
+      question: "Try to communicate with Jen and Click next.",
       answers: [
         {
           answer: "Next",
@@ -219,7 +219,7 @@
     // 13 and 14 are seizure non timer instructions
     {
       id: 13,
-      question: " If Jen is confused, terrified, or otherwise upset, that’s okay. The seizure has passed and Jen is in recovery mode. Jen may not know herself, may be stuttering, or may be entirely nonverbal. Her brain is rebooting. Water, time, and sleep is the only cure. Have her drink some water, and herd her towards one of the wellness rooms once she’s able to stutter in a few minutes. \n\n If jen is particularly upset, play her some soothing audio.",
+      question: " If Jen is confused, terrified, or otherwise upset, that’s okay. The seizure has passed and Jen is in recovery mode. Jen may not know herself, may be stuttering, or may be entirely nonverbal. Her brain is rebooting. Water, time, and sleep is the only cure. Have her drink some water, and herd her towards one of the wellness rooms once she’s able to stutter in a few minutes. \n\n If Jen is particularly upset, play her some soothing audio.",
       answers: [
         {
           answer: "Click here for audio", // insert link here
@@ -302,7 +302,7 @@
       question: "Touch here to call 911. This is not a normal medical event for Jen. Please share that Jen is having a medical event and has cerebral palsy, asthma/restrictive thoracic disorder, absence seizures, and periodic partial paralysis.",
       answers: [
         {
-          answer: "click here to call 911!",
+          answer: "Click here to call 911!",
           nextQuestion: 91111111
         }
       ]
@@ -377,7 +377,9 @@
     // if the current question is 13, then tapping the first button should play/link to audio?
     if (currentQuestion.id === 13) {
       // hard linking to discord, I can fix this later
-      window.location.href = "https://cdn.discordapp.com/attachments/1067638884214788176/1128493877179973642/image.png"
+      window.open("https://cdn.discordapp.com/attachments/1067638884214788176/1128493877179973642/image.png")
+      backQueue.pop()
+      return;
     }
 
       currentQuestion = questionNodes[currentQuestion.answers[1].nextQuestion]
@@ -551,7 +553,7 @@ $: {
 
 .guardian-btn {
   position: absolute;
-  bottom: -10px;
+  bottom: -50px;
   left: -10px;
   background-color: transparent;
 }
