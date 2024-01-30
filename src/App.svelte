@@ -326,6 +326,12 @@
         }
       ],
     },
+
+    {
+      id: 21,
+      question: "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. My breathing machine is in the cooler bag on the right bedside table. Thank you!",
+      answers: [],
+    }
   ]
 
   let currentQuestion = questionNodes[0]
@@ -391,9 +397,12 @@
     // }
 
     let guardianHandler = () => {
+      backQueue.push(currentQuestion.id)
+      currentQuestion = questionNodes[21]
+
       // () => currentQuestion.question = currentQuestion.guardianText
-      currentQuestion.answers = [] // manually clearing the array here might not be the best option?
-      currentQuestion.question = "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. My breathing machine is in the cooler bag on the right bedside table. Thank you!"
+      // currentQuestion.answers = [] // manually clearing the array here might not be the best option?
+      // currentQuestion.question = "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. My breathing machine is in the cooler bag on the right bedside table. Thank you!"
     }
 
     let backQueue = [];
