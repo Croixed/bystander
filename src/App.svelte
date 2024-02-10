@@ -183,7 +183,7 @@
       answers: [
         {
           answer: "Touch here for next",
-          nextQuestion: 11
+          nextQuestion: 22
         }
       ]
     },
@@ -331,6 +331,34 @@
       id: 21,
       question: "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. After a seizure, I’m a little frightened of things in motion, like elevators or cars. Please don’t use my last name or the word home. Please understand that I currently have no filter and will not remember much later. Please be patient.",
       answers: [],
+    },
+    {
+      id: 22,
+      question: "Is Jen able to communicate now?",
+      answers: [
+        {
+          answer: "Yes", // goto "talk to jen" ending(?)
+          nextQuestion: 23
+        },
+        {
+          answer: "No", // goto goto "contact sneha" call button ending(?) w/ 911 catch if no sneha
+          nextQuestion: 24 // 11 was addie but I made a new entry
+        }
+      ],
+    },
+    {
+      id: 23,
+      question: "Talk to Jen!",
+      answers: []
+    },
+    {
+      id: 24,
+      question: "Ask Sneha for help, telling her that Jen is having asthma related breathing issues.",
+      answers: [
+        {
+          answer: "Tap here to call Sneha."
+        }
+      ]
     }
   ]
 
@@ -360,6 +388,15 @@
       window.location.href = "tel:911"
     }
 
+    if (currentQuestion.id === 24) { // might need to get updated when there's more helpers
+      window.location.href = "tel:6149159064"
+      console.log(questionNodes[24].answers)
+      console.log(currentQuestion.id, "24 probs")
+      questionNodes[24].answers.push({answer: "didn't work? Try calling 911"})
+      questionNodes = questionNodes;
+      return;
+    }
+
     
 
 
@@ -375,7 +412,7 @@
           audioPlaying = false;
         })
       } else if (audioPlaying && currentQuestion.id === 13) {
- 
+        
         console.log(backQueue)
       } else {
         backQueue.push(currentQuestion.id)
@@ -399,6 +436,11 @@
       return;
     }
 
+    if (currentQuestion.id === 24) {
+      window.location.href = "tel:6149159064"
+      return;
+    }
+
           // this is a bit goofy
           if (currentQuestion.id === 20) {
         currentLoc = "maine"
@@ -417,21 +459,28 @@
 
     let guardianHandler = () => {
       backQueue.push(currentQuestion.id)
+      const lastId = backQueue[backQueue.length - 1]
       currentQuestion = questionNodes[21]
 
       console.log(backQueue[backQueue.length - 1], currentLoc)
 
       if (currentLoc === "ohio") {
         
-        if (backQueue[backQueue.length - 1] === 13) { // seizure
+        if (lastId === 13) { // seizure
           currentQuestion.question = "I live at [description]. Key should be in my jacket pocket or the pocket of whatever bag I brought today. After a seizure, I’m a little frightened of things in motion, like elevators or cars. Please don’t use my last name or the word home. Please understand that I currently have no filter and will not remember much later. Please be patient."
+        }
+        if (lastId === 23 || lastId === 11) { // asthma, if it's "talk to jen" or "find addie"
+          currentQuestion.question = "My breathing machine is located at [description]"
         }
 
       } else if (currentLoc === "maine") {
 
       } else { // other "default"
-        if (backQueue[backQueue.length - 1] === 13) { // seizure
+        if (lastId === 13) { // seizure
           currentQuestion.question = "I live at [description]. Key should be in my jacket pocket or the pocket of whatever bag I brought today. After a seizure, I’m a little frightened of things in motion, like elevators or cars. Please don’t use my last name or the word home. Please understand that I currently have no filter and will not remember much later. Please be patient."
+        }
+        if (lastId === 23) { // asthma
+          currentQuestion.question = "My breathing machine is located in my carry-on suitcase. Thank you!"
         }
 
       }
@@ -622,4 +671,3 @@ img {
 }
 
 </style>
-
