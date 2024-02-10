@@ -71,7 +71,7 @@
 
 
     {
-      question: "Is Jen conscious/awake?",
+      question: "Is Jen alertly awake?",
       id: 4,
       answers: [
         {
