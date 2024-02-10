@@ -329,7 +329,7 @@
 
     {
       id: 21,
-      question: "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. My breathing machine is in the cooler bag on the right bedside table. Thank you!",
+      question: "I live across the street at the Residence Inn. Room 524. Key should be in my jacket pocket or the pocket of whatever bag I brought today. After a seizure, I’m a little frightened of things in motion, like elevators or cars. Please don’t use my last name or the word home. Please understand that I currently have no filter and will not remember much later. Please be patient.",
       answers: [],
     }
   ]
@@ -340,10 +340,20 @@
   let currentTimerId = 9;
   const audioElement = new Audio(audio);
   let audioPlaying = false;
+  let currentLoc = "other" // "maine" || "ohio"
 
   // the purpose of this function is to handle the various "final" actions button 1 can perform at the end of the tree
   // I'm sure there has to be a better way to do this. also I'll rename it later
   let primaryButtonHandler = () => {
+    
+        // this is a bit goofy
+        if (currentQuestion.id === 20) {
+          currentLoc = "ohio"
+          console.log(currentLoc)
+        }
+        console.log(currentLoc)
+
+
     // if the current question is 12, 18, or 19, then tapping a button should dial 911?
     // backQueue.push(currentQuestion.id)
     if (currentQuestion.id === 12 || currentQuestion.id === 18 || currentQuestion.id === 19) {
@@ -373,6 +383,7 @@
         {clearTimeout(currentTimerId)}
         console.log(currentTimerId, " - current timer id")
         console.log('timeoutwas just cleareed with temp func')
+
       }
 
     
@@ -388,7 +399,15 @@
       return;
     }
 
+          // this is a bit goofy
+          if (currentQuestion.id === 20) {
+        currentLoc = "maine"
+        console.log(currentLoc)
+      }
+
       currentQuestion = questionNodes[currentQuestion.answers[1].nextQuestion]
+
+
     }
 
     // let buttonThreeHandler = () => {
@@ -399,6 +418,23 @@
     let guardianHandler = () => {
       backQueue.push(currentQuestion.id)
       currentQuestion = questionNodes[21]
+
+      console.log(backQueue[backQueue.length - 1], currentLoc)
+
+      if (currentLoc === "ohio") {
+        
+        if (backQueue[backQueue.length - 1] === 13) { // seizure
+          currentQuestion.question = "I live at [description]. Key should be in my jacket pocket or the pocket of whatever bag I brought today. After a seizure, I’m a little frightened of things in motion, like elevators or cars. Please don’t use my last name or the word home. Please understand that I currently have no filter and will not remember much later. Please be patient."
+        }
+
+      } else if (currentLoc === "maine") {
+
+      } else { // other "default"
+        if (backQueue[backQueue.length - 1] === 13) { // seizure
+          currentQuestion.question = "I live at [description]. Key should be in my jacket pocket or the pocket of whatever bag I brought today. After a seizure, I’m a little frightened of things in motion, like elevators or cars. Please don’t use my last name or the word home. Please understand that I currently have no filter and will not remember much later. Please be patient."
+        }
+
+      }
 
       // () => currentQuestion.question = currentQuestion.guardianText
       // currentQuestion.answers = [] // manually clearing the array here might not be the best option?
